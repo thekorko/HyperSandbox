@@ -38,9 +38,22 @@ class Player():
           self.y += self.vel
 
 def redrawWindow(window,player):
-  player.draw(window)
   window.fill((255,255,255))
+  player.draw(window)
   pygame.display.update()
+
+def screenControl():
+  keys = pygame.key.get_pressed()
+
+  if keys[pygame.K_F11]:
+    pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+
+  elif keys[pygame.K_F10]:
+    pygame.display.set_mode((width, height))
+
+  
+  print("itIsInFullScreen", fullScreen)
 
 
 def main():
@@ -53,5 +66,6 @@ def main():
         pygame.quit()
     p.move()
     redrawWindow(window,p)
+    # screenControl()
 
 main()
