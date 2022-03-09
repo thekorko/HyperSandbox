@@ -50,19 +50,20 @@ class Player():
           self.y += self.vel
       self.rect = (self.x, self.y, self.width, self.height)
 
-def stateWindow(bgcolor,text,color):
+def stateWindow(window, bgcolor,text,color):
     window.fill(bgcolor)
     text_surface = myfont.render(text, False, color)
     window.blit(text_surface,(0,0))
 
 def deathWindow(window):
-  bgcolor = (0,0,0)
+  bgcolor = (50,50,50)
   text = 'You died.'
   color = (255,0,0)
-  stateWindow(bgcolor,text,color)
+  stateWindow(window, bgcolor,text,color)
 
 def redrawWindow(window,player):
-  window.fill((255,255,255))
+  if player.isAlive:
+    window.fill((255,255,255))
   #Fill the windows before drawing the player otherwise it doesn't work
   player.draw(window)
   pygame.display.update()
@@ -86,9 +87,12 @@ def playerDeath(player):
 
   if player.x < 0 or player.y < 0:
     player.isAlive = False
+    deathWindow(window)
+
 
   elif player.x > w or player.y > h:
     player.isAlive = False
+    deathWindow(window)
 
 #Main loop
 def main():
