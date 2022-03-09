@@ -50,16 +50,35 @@ class Player():
           self.y += self.vel
       self.rect = (self.x, self.y, self.width, self.height)
 
-def stateWindow(bgcolor,text,color):
+class Monster():
+  def __init__(self, x, y, width, height, color):
+    self.x = x
+    self.y = y
+    self.width = width
+    self.height = height
+    self.color = color
+    self.rect = (x,y,width,height)
+    self.vel = 3
+    self.isAlive = True
+
+  def draw(self,window):
+      if self.isAlive:
+        pygame.draw.rect(window, self.color, self.rect)
+      else:
+        pygame.draw.rect(window, (0,0,0), self.rect)
+        self.x = 200
+        self.y = 200
+
+def stateWindow(window,bgcolor,text,color):
     window.fill(bgcolor)
     text_surface = myfont.render(text, False, color)
     window.blit(text_surface,(0,0))
 
 def deathWindow(window):
-  bgcolor = (0,0,0)
+  bgcolor = (50,50,50)
   text = 'You died.'
   color = (255,0,0)
-  stateWindow(bgcolor,text,color)
+  stateWindow(window,bgcolor,text,color)
 
 def redrawWindow(window,player):
   window.fill((255,255,255))
@@ -86,9 +105,11 @@ def playerDeath(player):
 
   if player.x < 0 or player.y < 0:
     player.isAlive = False
+    deathWindow(window)
 
   elif player.x > w or player.y > h:
     player.isAlive = False
+    deathWindow(window)
 
 #Main loop
 def main():
@@ -104,7 +125,6 @@ def main():
 
     playerDeath(p)
     redrawWindow(window,p)
-    #TEST deathWindow(window)
     # screenControl()
 
 main()
