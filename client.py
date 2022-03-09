@@ -1,4 +1,6 @@
 import pygame
+pygame.font.init()
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
 #Window size
 width = 800
 height = 600
@@ -30,7 +32,7 @@ class Player():
         pygame.draw.rect(window, (0,0,0), self.rect)
         self.x = 200
         self.y = 200
-        
+
 
   def move(self):
       keys = pygame.key.get_pressed()
@@ -48,8 +50,21 @@ class Player():
           self.y += self.vel
       self.rect = (self.x, self.y, self.width, self.height)
 
+def stateWindow(window, bgcolor,text,color):
+    window.fill(bgcolor)
+    text_surface = myfont.render(text, False, color)
+    window.blit(text_surface,(0,0))
+
+def deathWindow(window):
+  bgcolor = (50,50,50)
+  text = 'You died.'
+  color = (255,0,0)
+  stateWindow(window, bgcolor,text,color)
+
 def redrawWindow(window,player):
-  window.fill((255,255,255))
+  if player.isAlive:
+    window.fill((255,255,255))
+  #Fill the windows before drawing the player otherwise it doesn't work
   player.draw(window)
   pygame.display.update()
 
@@ -63,7 +78,7 @@ def screenControl():
   elif keys[pygame.K_F10]:
     pygame.display.set_mode((width, height))
 
-  
+
   print("itIsInFullScreen", fullScreen)
 
 def playerDeath(player):
@@ -72,13 +87,17 @@ def playerDeath(player):
 
   if player.x < 0 or player.y < 0:
     player.isAlive = False
-  
+    deathWindow(window)
+
+
   elif player.x > w or player.y > h:
     player.isAlive = False
+    deathWindow(window)
 
-
+#Main loop
 def main():
   run = True
+  #Instantiate the object, from the class Player
   p = Player(50,50,100,100,(180,0,240))
   while run:
     for event in pygame.event.get():
@@ -89,6 +108,7 @@ def main():
 
     playerDeath(p)
     redrawWindow(window,p)
+    #TEST deathWindow(window)
     # screenControl()
 
 main()
