@@ -1,4 +1,6 @@
 import pygame
+pygame.font.init()
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
 #Window size
 width = 800
 height = 600
@@ -40,14 +42,27 @@ class Player():
           self.y += self.vel
       self.rect = (self.x, self.y, self.width, self.height)
 
+def stateWindow(bgcolor,text,color):
+    window.fill(bgcolor)
+    text_surface = myfont.render(text, False, color)
+    window.blit(text_surface,(0,0))
+
+def deathWindow(window):
+  bgcolor = (0,0,0)
+  text = 'You died.'
+  color = (255,0,0)
+  stateWindow(bgcolor,text,color)
+
 def redrawWindow(window,player):
   window.fill((255,255,255))
+  #Fill the windows before drawing the player otherwise it doesn't work
   player.draw(window)
   pygame.display.update()
 
-
+#Main loop
 def main():
   run = True
+  #Instantiate the object, from the class Player
   p = Player(50,50,100,100,(180,0,240))
   while run:
     for event in pygame.event.get():
@@ -55,6 +70,8 @@ def main():
         run = False
         pygame.quit()
     p.move()
+    #Update the window and player
     redrawWindow(window,p)
-
+    deathWindow(window)
+#execute the main loop
 main()
