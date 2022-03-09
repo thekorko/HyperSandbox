@@ -1,6 +1,7 @@
 # Welcome to HyperSandbox!
 
 Hi fellow code reader, This is a repo where we play with different programming languages and try to create interesting and fun things with code!
+
 The best Super repository -> Ideas alternativas
 
 ## First Project: **Untitled** Game:
@@ -9,6 +10,7 @@ The best Super repository -> Ideas alternativas
 
 ### Game ideas:
 Idea nº1: The box could possibly attack monsters, which are other bigger boxes, maybe shoot some bullets in a boss style fight, then repeat levels with various difficulties.
+
 Idea nº2: The box could be placed inside a simple level with moderatelly sized enemies, and confront or evade them until a bigger enemy appears. Then repeats levels.
 
 ### Features:
