@@ -21,9 +21,16 @@ class Player():
     self.color = color
     self.rect = (x,y,width,height)
     self.vel = 3
+    self.isAlive = True
 
   def draw(self,window):
-      pygame.draw.rect(window, self.color, self.rect)
+      if self.isAlive:
+        pygame.draw.rect(window, self.color, self.rect)
+      else:
+        pygame.draw.rect(window, (0,0,0), self.rect)
+        self.x = 200
+        self.y = 200
+        
 
   def move(self):
       keys = pygame.key.get_pressed()
@@ -59,6 +66,16 @@ def screenControl():
   
   print("itIsInFullScreen", fullScreen)
 
+def playerDeath(player):
+  # Screen sizes
+  w, h = pygame.display.get_surface().get_size()
+
+  if player.x < 0 or player.y < 0:
+    player.isAlive = False
+  
+  elif player.x > w or player.y > h:
+    player.isAlive = False
+
 
 def main():
   run = True
@@ -69,6 +86,8 @@ def main():
         run = False
         pygame.quit()
     p.move()
+
+    playerDeath(p)
     redrawWindow(window,p)
     # screenControl()
 
