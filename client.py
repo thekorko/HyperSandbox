@@ -81,7 +81,8 @@ def deathWindow(window):
   stateWindow(window,bgcolor,text,color)
 
 def redrawWindow(window,player):
-  window.fill((255,255,255))
+  if player.isAlive:
+    window.fill((255,255,255))
   #Fill the windows before drawing the player otherwise it doesn't work
   player.draw(window)
   pygame.display.update()
