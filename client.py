@@ -86,6 +86,12 @@ def deathWindow(window):
   color = (255,0,0)
   stateWindow(window,bgcolor,text,color)
 
+def winWindow(window):
+    bgcolor = (200,200,200)
+    text = 'You Won.'
+    color = (0,255,0)
+    stateWindow(window,bgcolor,text,color)
+
 def redrawWindow(window,player):
   if player.isAlive:
     window.fill((255,255,255))
