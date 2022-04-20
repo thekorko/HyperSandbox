@@ -50,12 +50,6 @@ class Player():
 
       if keys[pygame.K_s]:
           self.y += self.vel
-
-      if keys[pygame.K_f]:
-        i = 0
-        while i<60:
-          bullet.x += 1
-          i += i + 1
           
       self.rect = (self.x, self.y, self.width, self.height)
 
@@ -97,8 +91,9 @@ class Bullet():
     self.height = height
     self.color = color
     self.rect = (x,y,width,height)
-    self.vel = 1
+    self.vel = 2
     self.isMoving = False
+    self.c = 0
   
   def draw(self, window, player):
     if self.isMoving:
@@ -118,7 +113,9 @@ class Bullet():
   def shoot(self):
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_f]:
+    if keys[pygame.K_f] and not self.isMoving:
+      self.c += 1
+      print("Shooting.", self.c)
       self.isMoving = True
 
 
