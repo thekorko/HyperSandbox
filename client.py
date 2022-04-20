@@ -36,22 +36,30 @@ class Player():
         self.y = self.death[1]
 
 
-  def move(self):
+  def move(self, bullet):
       keys = pygame.key.get_pressed()
 
-      if keys[pygame.K_LEFT]:
+      if keys[pygame.K_a]:
           self.x -= self.vel
 
-      if keys[pygame.K_RIGHT]:
+      if keys[pygame.K_d]:
           self.x += self.vel
 
-      if keys[pygame.K_UP]:
+      if keys[pygame.K_w]:
           self.y -= self.vel
 
-      if keys[pygame.K_DOWN]:
+      if keys[pygame.K_s]:
           self.y += self.vel
+
+      if keys[pygame.K_f]:
+        i = 0
+        while i<60:
+          bullet.x += 1
+          i += i + 1
+          
       self.rect = (self.x, self.y, self.width, self.height)
 
+        
 class Monster():
   def __init__(self, x, y, width, height, color):
     self.x = x
@@ -75,6 +83,49 @@ class Monster():
             self.x += 0.5
             i+=i
 
+  def move(self):
+    if self.x != width - 10:
+      self.x += self.vel
+
+    self.rect = (self.x, self.y, self.width, self.height)
+
+class Bullet():
+  def __init__(self, x, y, width, height, color):
+    self.x = x
+    self.y = y
+    self.width = width
+    self.height = height
+    self.color = color
+    self.rect = (x,y,width,height)
+    self.vel = 1
+    self.isMoving = False
+  
+  def draw(self, window, player):
+    if self.isMoving:
+      self.x += self.vel
+      pygame.draw.rect(window, (255, 0, 0), (self.x, self.y, self.width, self.height))
+      if (self.x > width):
+        self.isMoving = False
+        self.x = player.x
+        self.y = player.y
+        
+    else:
+      # self.rect = (player.x, player.y, self.width, self.height)
+      self.y = player.y
+      self.x = player.x
+      pygame.draw.rect(window, self.color, (self.x, self.y, self.width, self.height))
+
+  def shoot(self):
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_f]:
+      self.isMoving = True
+
+
+
+
+
+# END CLASSES
 def stateWindow(window,bgcolor,text,color):
     window.fill(bgcolor)
     text_surface = myfont.render(text, False, color)
@@ -92,13 +143,15 @@ def winWindow(window):
     color = (0,255,0)
     stateWindow(window,bgcolor,text,color)
 
-def redrawWindow(window,player):
+def redrawWindow(window,player,m,bullet):
   if player.isAlive:
     window.fill((255,255,255))
   else:
     deathWindow(window)
   #Fill the windows before drawing the player otherwise it doesn't work
   player.draw(window)
+  m.draw(window)
+  bullet.draw(window, player)
   pygame.display.update()
 
 def screenControl():
@@ -131,17 +184,21 @@ def playerDeath(player):
 def main():
   run = True
   #Instantiate the object, from the class Player
+  b = Bullet(25,25,50,50,(0,56,230))
   p = Player(50,50,100,100,(180,0,240))
-  m = Monster(-15,25,50,50,(0,190,230))
+  m = Monster(25,25,50,50,(0,190,230))
+
   while run:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         run = False
         pygame.quit()
-    p.move()
+    p.move(b)
+    # m.move()
+    b.shoot()
 
     playerDeath(p)
-    redrawWindow(window,p)
+    redrawWindow(window,p,m,b)
     # screenControl()
 
 main()
