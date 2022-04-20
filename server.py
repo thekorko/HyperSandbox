@@ -5,9 +5,22 @@ from _thread import *
 import sys
 
 #put your local ip adress
-server = "localhost"
+server = "127.0.0.1"
 #put your local port
 port = 5555
+
+#Let the admin write the ip adress
+print("Enter server ip_address or leave blank and press enter to use",server,"(you can't be reached by other computers):")
+server_in = input()
+if server_in:
+    server = server_in
+
+#let the admin write the port
+print("Enter server PORT or leave blank and press enter to use",port,":")
+port_in = input()
+if port_in:
+    port = int(port_in)
+
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -20,7 +33,7 @@ except socket.error as e:
 #Here it only looks for one connection
 s.listen(2) #The number of clients
 
-print("Listening on port", port,", Server started, Waiting for player")
+print("Listening on", server,":",port,", Server started, Waiting for player")
 
 #This is threaded, a new process running in the background
 #So we can have a hundred connections going, executing as subprocesses
@@ -45,6 +58,8 @@ def threaded_client(conn):
             conn.sendall(atr.encode(reply))
         except:
             break
+    print("Lost connection to client","ADDRESS")
+    conn.close()
 
 #if this was sequentially programmed we would have to wait for the threaded_client(conn) function to finish when called
 #
