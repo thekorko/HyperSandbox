@@ -40,26 +40,26 @@ class Player():
       keys = pygame.key.get_pressed()
 
       if keys[pygame.K_a]:
-          self.x -= self.vel
+          self.x -= 0.3*self.vel
 
       if keys[pygame.K_d]:
-          self.x += self.vel
+          self.x += 0.3*self.vel
 
       if keys[pygame.K_w]:
-          self.y -= self.vel
+          self.y -= 0.3*self.vel
 
       if keys[pygame.K_s]:
-          self.y += self.vel
+          self.y += 0.3*self.vel
 
       if keys[pygame.K_f]:
         i = 0
         while i<60:
           bullet.x += 1
           i += i + 1
-          
+
       self.rect = (self.x, self.y, self.width, self.height)
 
-        
+
 class Monster():
   def __init__(self, x, y, width, height, color):
     self.x = x
@@ -99,7 +99,7 @@ class Bullet():
     self.rect = (x,y,width,height)
     self.vel = 1
     self.isMoving = False
-  
+
   def draw(self, window, player):
     if self.isMoving:
       self.x += self.vel
@@ -108,7 +108,7 @@ class Bullet():
         self.isMoving = False
         self.x = player.x
         self.y = player.y
-        
+
     else:
       # self.rect = (player.x, player.y, self.width, self.height)
       self.y = player.y
@@ -121,9 +121,16 @@ class Bullet():
     if keys[pygame.K_f]:
       self.isMoving = True
 
-
-
-
+  def move(self):
+    w, h = pygame.display.get_surface().get_size()
+    if self.x < 0:
+      self.x += 0.3*self.vel
+    elif self.x > w:
+      self.x -= 0.3*self.vel
+    if self.y < 0:
+      self.y += 0.3*self.vel
+    elif self.y > h:
+      self.y -= 0.3*self.vel
 
 # END CLASSES
 def stateWindow(window,bgcolor,text,color):
@@ -196,6 +203,7 @@ def main():
     p.move(b)
     # m.move()
     b.shoot()
+    m.move()
 
     playerDeath(p)
     redrawWindow(window,p,m,b)
