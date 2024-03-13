@@ -1,5 +1,6 @@
 
 <?php
+//SECTION: OBTENER RESULTADOS DE LA API
 if (isset($_POST['picturedate']) && $_POST['picturedate']!="") {
 	$picturedate = $_POST['picturedate'];
 } else {
@@ -18,16 +19,40 @@ echo '<h1>NASA APOD API CALL</h1>
       </p><br><hr>';
       curl_close($curlconn);
 //var_dump($response);
-
+//SECTION: IMPRIMIR RESULTADOS
 $result = json_decode($response);
 echo "$picturedate";
-echo "<center><img style='width:1080px;height:auto;' src='$result->url'></img></center>";
+echo "<center><img id='fetched-img' style='width:1080px;height:auto;' src='$result->url'></img></center>";
 echo "<center><table>";
 if (!empty($result->copyright)) {
       echo "<tr><td>Copyright:</td><td>$result->copyright</td></tr>";
 }
 echo "</table></center>";
 ?>
+
+
+<script>
+async function downloadImage() {
+  const image = await fetch("<?php echo"$result->url" ?>")
+
+  if (!image) {
+      alert(' Algo paso')
+  }
+  //esto es raro
+  const imageBlog = await image.blob()
+  const imageURL = URL.createObjectURL(imageBlog)
+
+  const link = document.createElement('a')
+  link.href = imageURL
+  link.download = 'image file name here'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+
+  // esto es raro
+}
+</script>
+<center>
 <form action="" method="POST">
 <label class="mb">Enter Order ID:</label>
 <section class="mb">
@@ -36,6 +61,8 @@ echo "</table></center>";
 </section>
 <button type="submit" name="submit">Submit</button>
 </form>
+<button name="download-image" onclick="downloadImage()">Descargar imagen</button>
+</center>
 <style>
 .mb {
 margin-bottom: 1rem;
