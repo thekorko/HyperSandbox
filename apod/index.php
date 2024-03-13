@@ -1,5 +1,12 @@
+
 <?php
-$curlconn = curl_init('https://api.nasa.gov/planetary/apod?concept_tags=True&api_key=');
+if (isset($_POST['picturedate']) && $_POST['picturedate']!="") {
+	$picturedate = $_POST['picturedate'];
+} else {
+      $picturedate = date("Y-m-d");
+}
+$url = "https://api.nasa.gov/planetary/apod?date=$picturedate&concept_tags=True&api_key=";
+$curlconn = curl_init($url);
 curl_setopt($curlconn, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curlconn, CURLOPT_SSL_VERIFYHOST, false);
 curl_setopt($curlconn, CURLOPT_SSL_VERIFYPEER, false);
@@ -13,8 +20,24 @@ echo '<h1>NASA APOD API CALL</h1>
 //var_dump($response);
 
 $result = json_decode($response);
+echo "$picturedate";
 echo "<center><img style='width:1080px;height:auto;' src='$result->url'></img></center>";
 echo "<center><table>";
-echo "<tr><td>Copyright:</td><td>$result->copyright</td></tr>";
+if (!empty($result->copyright)) {
+      echo "<tr><td>Copyright:</td><td>$result->copyright</td></tr>";
+}
 echo "</table></center>";
 ?>
+<form action="" method="POST">
+<label class="mb">Enter Order ID:</label>
+<section class="mb">
+      <label for="date">Seleccionar Fecha:</label>
+      <input type="date" id="picturedate" name="picturedate" value="<?php date("Y/m/d"); ?>" min="2018-01-01" max="2024-03-31" />
+</section>
+<button type="submit" name="submit">Submit</button>
+</form>
+<style>
+.mb {
+margin-bottom: 1rem;
+}
+</style>
