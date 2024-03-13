@@ -1,5 +1,5 @@
 <?php
-$curlconn = curl_init('https://api.nasa.gov/planetary/apod?concept_tags=True&api_key=l2yDLDY1vcLGO2aCYrBuSHOwIaQ6BkvMq9BxKx8l');
+$curlconn = curl_init('https://api.nasa.gov/planetary/apod?concept_tags=True&api_key=');
 curl_setopt($curlconn, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curlconn, CURLOPT_SSL_VERIFYHOST, false);
 curl_setopt($curlconn, CURLOPT_SSL_VERIFYPEER, false);
