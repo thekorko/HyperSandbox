@@ -33,10 +33,11 @@ echo "</table></center>";
 
 <script>
 async function downloadImage() {
-  const image = await fetch("<?php echo"$result->url" ?>")
+  const image = document.querySelector('#fetched-img')
 
   if (!image) {
       alert(' Algo paso')
+      return
   }
   //esto es raro
   const imageBlog = await image.blob()
