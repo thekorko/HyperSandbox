@@ -30,29 +30,6 @@ if (!empty($result->copyright)) {
 echo "</table></center>";
 ?>
 
-
-<script>
-async function downloadImage() {
-  const image = document.querySelector('#fetched-img')
-
-  if (!image) {
-      alert(' Algo paso')
-      return
-  }
-  //esto es raro
-  const imageBlog = await image.blob()
-  const imageURL = URL.createObjectURL(imageBlog)
-
-  const link = document.createElement('a')
-  link.href = imageURL
-  link.download = 'image file name here'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-
-  // esto es raro
-}
-</script>
 <center>
 <form action="" method="POST">
 <label class="mb">Enter Order ID:</label>
@@ -62,7 +39,7 @@ async function downloadImage() {
 </section>
 <button type="submit" name="submit">Submit</button>
 </form>
-<button name="download-image" onclick="downloadImage()">Descargar imagen</button>
+<a href="download.php?file=<?=$result->url?>">Download</a>
 </center>
 <style>
 .mb {
